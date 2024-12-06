@@ -1,8 +1,12 @@
-let forgalom = 0
-let erzekelo = 0
-let erzekelouj = 0
 let zoldhossz = 0
-led.enable(true)
+let gyalogosok = 0
+let forgalom_uj = 0
+let forgalom_regi = 0
+let forgalom = 0
+pins.onPulsed(DigitalPin.P9, PulseValue.High, function () {
+    zoldhossz = 0
+    gyalogosok += 1
+})
 basic.forever(function () {
     pins.digitalWritePin(DigitalPin.P2, 1)
     basic.pause(5000)
@@ -22,20 +26,14 @@ basic.forever(function () {
     pins.digitalWritePin(DigitalPin.P1, 0)
 })
 basic.forever(function () {
-    if (0 == pins.digitalReadPin(DigitalPin.P9)) {
-        led.plot(0, 0)
-        zoldhossz = 0
-    } else {
-        led.unplot(0, 0)
+    forgalom_uj = pins.digitalReadPin(DigitalPin.P5)
+    if (forgalom_regi != forgalom_uj && forgalom_uj == 0) {
+        forgalom += 1
     }
+    forgalom_regi = forgalom_uj
+    basic.pause(10)
 })
 basic.forever(function () {
-    erzekelouj = pins.digitalReadPin(DigitalPin.P5)
-    if (erzekelo != erzekelouj && erzekelouj == 0) {
-        forgalom += 1
-        serial.writeNumbers([forgalom])
-    }
-    erzekelo = erzekelouj
-    basic.showNumber(forgalom)
-    basic.pause(100)
+    serial.writeNumbers([forgalom, gyalogosok])
+    basic.pause(1000)
 })
