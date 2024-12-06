@@ -1,11 +1,15 @@
 let zoldhossz = 0
 let gyalogosok = 0
+let forgalom = 0
 let forgalom_uj = 0
 let forgalom_regi = 0
-let forgalom = 0
 pins.onPulsed(DigitalPin.P9, PulseValue.High, function () {
     zoldhossz = 0
     gyalogosok += 1
+})
+input.onButtonPressed(Button.B, function () {
+    forgalom = 0
+    gyalogosok = 0
 })
 basic.forever(function () {
     pins.digitalWritePin(DigitalPin.P2, 1)
