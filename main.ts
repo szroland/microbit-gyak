@@ -1,3 +1,6 @@
+let forgalom = 0
+let erzekelo = 0
+let erzekelouj = 0
 let zoldhossz = 0
 led.enable(true)
 basic.forever(function () {
@@ -27,6 +30,12 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    basic.showNumber(pins.digitalReadPin(DigitalPin.P5))
+    erzekelouj = pins.digitalReadPin(DigitalPin.P5)
+    if (erzekelo != erzekelouj && erzekelouj == 0) {
+        forgalom += 1
+        serial.writeNumbers([forgalom])
+    }
+    erzekelo = erzekelouj
+    basic.showNumber(forgalom)
     basic.pause(100)
 })
